@@ -1,0 +1,4 @@
+[
+  "new&deltopiccases.py::NewDelTopicCases::test_del_a_topic_success",
+  "new&deltopiccases.py::NewDelTopicCases::test_new_a_topic_success"
+]
