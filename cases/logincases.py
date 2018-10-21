@@ -8,6 +8,8 @@
 import unittest
 from selenium import webdriver
 from pages.loginpage import *
+from tools.screensave import *
+from parameterized import parameterized
 
 
 class LoginCases(unittest.TestCase):
@@ -20,6 +22,10 @@ class LoginCases(unittest.TestCase):
         self.driver.quit()
 
     def test_login_success(self):
+        '''
+        测试登录成功的场景
+        :return:
+        '''
         # arrangement
         username = "pyse17"
         password = "pyse17"
@@ -27,28 +33,34 @@ class LoginCases(unittest.TestCase):
         # action
         login_page_instance = LoginPage(self.driver)
         dashboard_page = login_page_instance.login(username,password)
+        # save screen
+        save_screenshot_wrapper(self.driver, 1)
         # assert
         self.assertTrue(username in dashboard_page.greeting_link.text)
-        self.assertTrue("wp-admin" in dashboard_page.get_url())
+        self.assertTrue("wp-adminy" in dashboard_page.get_url())
 
-    def test_login_fail(self):
-        # arrangement
-        datas = [
-            {"username": "pyse17", "password": "", "partialURL": "wp-login", "veriyInfo": u"密码一栏为空"},
-            {"username": "pyse18", "password": "pyse18", "partialURL": "wp-login", "veriyInfo": u"无效用户名"},
-            {"username": "", "password": "pyse17", "partialURL": "wp-login", "veriyInfo": u"用户名一栏为空"},
-        ]
+    # @save_screen_shot_decorator
+    @parameterized.expand([
+        ("psw_empty", "pyse17", "",  "wp-login", u"密码一栏为空", 1),
+        ("invaliduser", "pyse18", "pyse18", "wp-login", u"无效用户名", 2),
+        ("user_empty", "", "pyse17", "wp-login", u"用户名一栏为空", 3),
+    ])
+    def test_login_fail(self, name, username, password, partialURL, verifyInfo, id):
+        '''
+        测试登录失败的各种场景
+        :return:
+        '''
+        # action
+        login_page_instance = LoginPage(self.driver)
+        login_fail_message = login_page_instance.login_as_expecting_error(username, password)
+        # save screen
+        save_screenshot_wrapper(self.driver, id)
+        # assert
+        self.assertTrue(verifyInfo in login_fail_message)
+        self.assertTrue(partialURL in login_page_instance.get_url())
 
-        for data in datas:
-            # action
-            login_page_instance = LoginPage(self.driver)
-            login_fail_message = login_page_instance.login_as_expecting_error(data["username"], data["password"])
-            # assert
-            self.assertTrue(data["veriyInfo"] in login_fail_message)
-            self.assertTrue(data["partialURL"] in login_page_instance.get_url())
 
-
-# if __name__ == "__main__":
-#     unittest.main()
+if __name__ == "__main__":
+    unittest.main()
 
 

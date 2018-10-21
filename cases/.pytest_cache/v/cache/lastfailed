@@ -1,1 +1,5 @@
-{}
+{
+  "logincases.py::LoginCases::test_login_fail": true,
+  "logincases.py::LoginCases::test_login_fail_0_invaliduser": true,
+  "logincases.py::LoginCases::test_login_success": true
+}

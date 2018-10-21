@@ -13,6 +13,7 @@ from pages.loginpage import LoginPage
 from pages.topiclistpage import TopicListPage
 from pages.newtopicpage import NewTopicPage
 from pages.trashtopiclistpage import TrashTopicListPage
+from tools.screensave import *
 
 
 class NewDelTopicCases(unittest.TestCase):
@@ -39,6 +40,10 @@ class NewDelTopicCases(unittest.TestCase):
         return post_id
 
     def test_new_a_topic_success(self):
+        '''
+        测试成功创建一篇文章
+        :return:
+        '''
         login_page = LoginPage(self.driver)
         dashboard_page = login_page.login_as_pyse17()
         topic_list_page = dashboard_page.navigate_to_topic_list_page()
@@ -51,22 +56,32 @@ class NewDelTopicCases(unittest.TestCase):
 
         # 到topiclistpage页面验证新发布的topic已经展示在list上
         topic_list_page = TopicListPage(self.driver)
+        save_screenshot_wrapper(self.driver, 1)
+
         topic_list_text = topic_list_page.get_topic_text_by_post_id(post_id)
         print("post_id :" + topic_title)
         print("topic_list_text :" + topic_list_text)
         self.assertEqual(topic_title, topic_list_text)
 
     def test_del_a_topic_success(self):
+        '''
+        测试成功彻底删除一篇新创建的文章
+        :return:
+        '''
         # 创建一篇新文章
         post_id = self._new_a_topic()
+        save_screenshot_wrapper(self.driver, 1)
         # 将新文章移入回收站
         topic_list_page = TopicListPage(self.driver)
+        save_screenshot_wrapper(self.driver, 2)
         topic_list_page.move_topic_to_trash_bin_by_post_id(post_id)
         # 将该文章彻底删除
         trash_topic_list_page = TrashTopicListPage(self.driver)
+        save_screenshot_wrapper(self.driver, 3)
         trash_topic_list_page.del_a_topic_item_throguly_by_post_id(post_id)
         # 到文章列表页面校验文章已不存在
         topic_list_page = TopicListPage(self.driver)
+        save_screenshot_wrapper(self.driver, 4)
 
         self.assertTrue(topic_list_page.topic_item_not_exist(post_id))
 

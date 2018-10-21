@@ -1,4 +1,6 @@
 [
-  "new&deltopiccases.py::NewDelTopicCases::test_del_a_topic_success",
-  "new&deltopiccases.py::NewDelTopicCases::test_new_a_topic_success"
+  "logincases.py::LoginCases::test_login_fail_0_psw_empty",
+  "logincases.py::LoginCases::test_login_fail_1_invaliduser",
+  "logincases.py::LoginCases::test_login_fail_2_user_empty",
+  "logincases.py::LoginCases::test_login_success"
 ]
