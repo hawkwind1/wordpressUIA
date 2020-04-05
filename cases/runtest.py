@@ -42,7 +42,7 @@ def send_mail(test_report_file_path):
     smtp = smtplib.SMTP()
     smtpserver = 'smtp.126.com' #发送邮箱服务器
     user = 'pansc2005@126.com'#发送邮箱用户/密码
-    password = '790520'
+    password = 'xxxx'
     sender = 'pansc2005@126.com'  #发送邮箱
     receiver = 'pansc2011@126.com' #接收邮箱
 
